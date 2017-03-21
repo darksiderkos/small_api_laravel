@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Category;
 use App\Http\Transformer\ProductTransformer;
+use App\Property;
 use Illuminate\Http\Request;
 use App\Product;
 
@@ -12,19 +13,26 @@ class ProductController extends ApiController
     //
 
 
-    public function index()
+    public function index($categoryId)
     {
-        $products = Product::paginate(10);
-        return $this->respondWithCollection($products, new ProductTransformer());
+        $eagerLoad = \Request::get('include');
+        if ($eagerLoad) {
+            $products = Product::with($eagerLoad)->where('category_id', '=', $categoryId)->get();
+            return $this->respondWithCollection($products, new ProductTransformer());
+        } else {
+            $products = Product::where('category_id', '=', $categoryId)->get();
+            return $this->respondWithCollection($products, new ProductTransformer());
+        }
 
     }
 
     public function show($productId)
     {
-        $product = Product::find($productId);
-        if (!$product){
+        $arr = explode(',', $productId); //can request few products
+        $product = Product::find($arr);
+        if (!$product) {
             return $this->errorNotFound();
         }
-        return $this->respondWithItem($product, new ProductTransformer());
+        return $this->respondWithCollection($product, new ProductTransformer());
     }
 }

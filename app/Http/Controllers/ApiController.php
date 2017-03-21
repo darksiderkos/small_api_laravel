@@ -14,10 +14,13 @@ class ApiController extends Controller
     protected $fractal;
 
 
-
     public function __construct(Manager $fractal)
     {
         $this->fractal = $fractal;
+        if (\Request::get('include')) {
+            $this->fractal->parseIncludes(\Request::get('include'));
+        }
+
     }
 
 
@@ -56,7 +59,7 @@ class ApiController extends Controller
     {
 
         return $this->respondWithArray([
-            'error'=>[
+            'error' => [
                 'http_code' => $this->statusCode,
                 'message' => $message,
             ]
@@ -67,9 +70,6 @@ class ApiController extends Controller
     {
         return $this->setStatusCode(404)->respondWithError($message);
     }
-
-
-
 
 
 }

@@ -13,11 +13,13 @@ class ProductSeeder extends Seeder
     {
         //
 
+
         $categories = App\Category::all();
         $faker = \Faker\Factory::create('en-US');
 
         foreach ($categories as $category) {
-            for ($i = 0; $i < 10; $i++) {
+            $randomCount = $faker->randomNumber(2);
+            for ($i = 0; $i < $randomCount; $i++) {
                 DB::table('products')->insert([
                     'category_id' => $category->id,
                     'name' => ucfirst($faker->word),

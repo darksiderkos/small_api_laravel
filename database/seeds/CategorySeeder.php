@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Faker\Factory;
 
 class CategorySeeder extends Seeder
 {
@@ -12,16 +13,13 @@ class CategorySeeder extends Seeder
     public function run()
     {
         //
-        $categories = [
-            'Drills',
-            'Perforators',
-            'Screwdrivers',
-            'Electric jigsaws',
-        ];
+        $faker = Factory::create();
+        $limit = 100;
 
-        foreach ($categories as $category){
+        for ($i = 0; $i < $limit; $i++){
             DB::table('categories')->insert([
-                'name' => $category,
+                'name' => 'Category-' . $faker->unique()->randomNumber(5),
+                'description' => $faker->text(60)
             ]);
         }
     }

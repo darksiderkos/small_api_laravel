@@ -15,7 +15,7 @@ class ValueSeeder extends Seeder
 
         for ($i = 0; $i<100; $i++){
             DB::table('values')->insert([
-                'value' => $faker->unique()->randomFloat(),
+                'value' => $faker->unique()->randomFloat(2, 1, 500),
             ]);
         }
     }

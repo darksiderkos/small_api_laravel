@@ -22,7 +22,6 @@ class ManyToManySeeder extends Seeder
                     'product_id' => $product->id,
                     'property_id' => $property->id,
                     'value_id' => random_int(1, $values_count)
-
                 ]);
             }
         }
