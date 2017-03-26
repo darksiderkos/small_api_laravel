@@ -11,6 +11,7 @@ use League\Fractal\Manager;
 class ApiController extends Controller
 {
     protected $statusCode = 200;
+
     protected $fractal;
 
 
@@ -69,6 +70,11 @@ class ApiController extends Controller
     public function errorNotFound($message = 'Resource not found')
     {
         return $this->setStatusCode(404)->respondWithError($message);
+    }
+
+    public function errorWrongArgs($message = 'Wrong args used')
+    {
+        return $this->setStatusCode(400)->respondWithError($message);
     }
 
 

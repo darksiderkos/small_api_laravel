@@ -17,20 +17,24 @@ class ProductController extends ApiController
     {
         $eagerLoad = \Request::get('include');
 
-        if ($eagerLoad) {
+        if ($eagerLoad == 'properties') {
             $products = Product::with($eagerLoad)->where('category_id', '=', $categoryId)->get();
             if ($products->isEmpty()) {
-                return $this->errorNotFound();
+                return $this->errorNotFound('No products found');
             }
             return $this->respondWithCollection($products, new ProductTransformer());
+        }
 
-
-        } else {
+        if (!$eagerLoad) {
             $products = Product::where('category_id', '=', $categoryId)->get();
             if ($products->isEmpty()) {
-                return $this->errorNotFound();
+                return $this->errorNotFound('No products found');
             }
             return $this->respondWithCollection($products, new ProductTransformer());
+        }
+
+        if ($eagerLoad != 'properties') {
+            return $this->errorWrongArgs('Wrong arguments used');
         }
 
     }

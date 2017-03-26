@@ -46,12 +46,14 @@ class Handler extends ExceptionHandler
     public function render($request, Exception $exception)
     {
         if ($exception instanceof HttpException){
-            return response()->json([
+            $response = json_encode([
                 'error' => [
-                    'http_code' => 404,
-                    'message' => 'Such route does not exist'
-                ]
-            ]);
+                    'http_code' => 400,
+                    'message' => 'Bad request. Such action does not exist'
+                ]]);
+            return response($response,
+                400,
+                ['Content-type' => 'application/json']);
         }
         return parent::render($request, $exception);
     }
