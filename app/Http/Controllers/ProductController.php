@@ -37,8 +37,7 @@ class ProductController extends ApiController
         }
     }
 
-    public
-    function show($productId)
+    public function show($productId)
     {
         $eagerLoad = \Request::get('include');
         $arr = explode(',', $productId); //can request few products
