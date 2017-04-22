@@ -3,63 +3,53 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\Http\Transformer\CategoryTransformer;
+use League\Fractal\Manager;
+use League\Fractal\Resource\Collection;
 use Illuminate\Http\Request;
+use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 
 class CategoryController extends ApiController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
-        //
-        $categories = Category::(10);
-        return $categories;
+//        $manager = new Manager();
+
+        $paginator = Category::paginate(5);
+        return $this->respondWithPagination($paginator, new CategoryTransformer());
+
+//        $categories = $paginator->getCollection();
+//
+//        $resource = new Collection($categories, new CategoryTransformer);
+//        $resource->setPaginator(new IlluminatePaginatorAdapter($paginator));
+//        $data = $manager->createData($resource)->toJson();
+//        return response($data, 200, ['Content-type' => 'application/json']);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function create(Request $request)
     {
         //
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function show($id)
     {
-        //
+        $category = Category::find($id);
+        if (!$category){
+            return $this->errorNotFound('Category not found');
+        }
+        return $this->respondWithItem($category, new CategoryTransformer());
     }
 
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
-        //
+
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function delete($id)
     {
         //

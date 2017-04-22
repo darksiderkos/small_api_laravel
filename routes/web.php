@@ -11,7 +11,7 @@
 |
 */
 
-Route::get('/', 'ProductController@index');
+//Route::get('/', 'ProductController@index');
 
 
 Route::group(['prefix' => '/api'], function () {
@@ -19,16 +19,16 @@ Route::group(['prefix' => '/api'], function () {
     //Categories
     Route::group(['prefix' => 'categories'], function () {
         Route::get('/', 'CategoryController@index'); //- получить список категорий
-        Route::get('/{categoryId}/products', 'ProductController@index');//- получить категорию со списком товаров и их свойствами (пагинация)
+        Route::get('/{id}', 'CategoryController@show')->where('id', '[0-9]+'); //- получить список категорий
+        Route::get('/{categoryId}/products', 'ProductController@index')->where('categoryId', '[0-9]+');//- получить категорию со списком товаров (пагинация)
 //        Route::post('/', 'CategoryController@create');
 //        Route::put('/{categoryId}', 'CategoryController@update');
 //        Route::delete('/{categoryId}', 'CategoryController@delete');
     });
 
     //Products
-    Route::group(['prefix'=>'products'], function(){
-        Route::get('/{productId}', 'ProductController@show'); // - получить товар с свойствами
-
+    Route::group(['prefix' => 'products'], function () {
+        Route::get('/{productId}', 'ProductController@show')->where('id', '[0-9]+'); // - получить товар с свойствами
     });
 
 

@@ -12,25 +12,24 @@ class ProductController extends ApiController
 {
     //
 
-
     public function index($categoryId)
     {
         $eagerLoad = \Request::get('include');
 
         if ($eagerLoad == 'properties') {
-            $products = Product::with($eagerLoad)->where('category_id', '=', $categoryId)->get();
+            $products = Product::with($eagerLoad)->where('category_id', '=', $categoryId)->paginate(10);
             if ($products->isEmpty()) {
                 return $this->errorNotFound('No products found');
             }
-            return $this->respondWithCollection($products, new ProductTransformer());
+            return $this->respondWithPagination($products, new ProductTransformer());
         }
 
         if (!$eagerLoad) {
-            $products = Product::where('category_id', '=', $categoryId)->get();
+            $products = Product::where('category_id', '=', $categoryId)->paginate(10);
             if ($products->isEmpty()) {
                 return $this->errorNotFound('No products found');
             }
-            return $this->respondWithCollection($products, new ProductTransformer());
+            return $this->respondWithPagination($products, new ProductTransformer());
         }
 
         if ($eagerLoad != 'properties') {
@@ -46,7 +45,7 @@ class ProductController extends ApiController
         if ($eagerLoad == 'properties') {
             $products = Product::with($eagerLoad)->find($arr);
             if ($products->isEmpty()) {
-                return $this->errorNotFound('No products found');
+                return $this->errorNotFound('Category not found');
             }
             return $this->respondWithCollection($products, new ProductTransformer());
         }
