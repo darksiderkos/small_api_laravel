@@ -28,7 +28,12 @@ Route::group(['prefix' => '/api'], function () {
 
     //Products
     Route::group(['prefix' => 'products'], function () {
+<<<<<<< HEAD
         Route::get('/{productId}', 'ProductController@show')->where('id', '[0-9]+'); // - получить товар с свойствами
+=======
+        Route::get('/{productId}', 'ProductController@show'); // - получить товар с свойствами
+
+>>>>>>> 8586fc4d7955c999900653b2a5dc471c40c62915
     });
 
 
