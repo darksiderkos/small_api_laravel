@@ -8,6 +8,7 @@ class Category extends Model
 {
     //
 //    protected $hidden = array('id');
+    protected $fillable = ['name', 'description'];
 
     public function products()
     {

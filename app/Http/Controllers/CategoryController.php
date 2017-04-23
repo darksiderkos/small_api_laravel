@@ -3,41 +3,43 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use Validator;
 use App\Http\Transformer\CategoryTransformer;
-use League\Fractal\Manager;
-use League\Fractal\Resource\Collection;
 use Illuminate\Http\Request;
-use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 
 class CategoryController extends ApiController
 {
 
     public function index()
     {
-//        $manager = new Manager();
-
-        $paginator = Category::paginate(5);
+        $paginator = Category::paginate(10);
         return $this->respondWithPagination($paginator, new CategoryTransformer());
-
-//        $categories = $paginator->getCollection();
-//
-//        $resource = new Collection($categories, new CategoryTransformer);
-//        $resource->setPaginator(new IlluminatePaginatorAdapter($paginator));
-//        $data = $manager->createData($resource)->toJson();
-//        return response($data, 200, ['Content-type' => 'application/json']);
     }
 
 
     public function create(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|unique:categories|max:255',
+            'description' => 'required|max:255'
+        ]);
+
+        if ($validator->fails()) {
+            return $this->errorNotAcceptable();
+        }
+
+        $category = new Category;
+        $category->name = $request->input('name');
+        $category->description = $request->input('description');
+        $category->save();
+        return $this->respondWithItem($category, new CategoryTransformer());
     }
 
 
     public function show($id)
     {
         $category = Category::find($id);
-        if (!$category){
+        if (!$category) {
             return $this->errorNotFound('Category not found');
         }
         return $this->respondWithItem($category, new CategoryTransformer());
@@ -46,7 +48,24 @@ class CategoryController extends ApiController
 
     public function update(Request $request, $id)
     {
+        $category = Category::find($id);
+        if (!$category) {
+            return $this->errorNotFound('Category not found');
+        }
 
+        $validator = Validator::make($request->all(), [
+            'name' => 'unique:categories|max:255',
+            'description' => 'max:255'
+        ]);
+
+        if ($validator->fails()) {
+            return $this->errorNotAcceptable();
+        }
+
+        $category->name = $request->input('name') ?: $category->name;
+        $category->description = $request->input('description') ?: $category->description;
+        $category->save();
+        return $this->respondWithItem($category, new CategoryTransformer());
     }
 
 

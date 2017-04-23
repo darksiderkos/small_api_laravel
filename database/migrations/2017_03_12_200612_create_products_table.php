@@ -21,7 +21,7 @@ class CreateProductsTable extends Migration
             $table->double('price');
             $table->boolean('is_active')->default(true);
             $table->text('description');
-//            $table->timestamps();
+            $table->timestamps();
 
 
             $table->foreign('category_id')

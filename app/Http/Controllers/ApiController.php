@@ -99,5 +99,11 @@ class ApiController extends Controller
         return $this->setStatusCode(403)->respondWithError($message);
     }
 
+    public function errorNotAcceptable($message = 'Input is not acceptable')
+    {
+        return $this->setStatusCode(406)->respondWithError($message);
+
+    }
+
 
 }
