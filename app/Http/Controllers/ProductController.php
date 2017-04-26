@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Category;
 use App\Http\Transformer\ProductTransformer;
-use App\Property;
 use Illuminate\Http\Request;
 use App\Product;
 use Validator;
@@ -15,32 +13,24 @@ class ProductController extends ApiController
 
     public function index($categoryId)
     {
-        $eagerLoad = \Request::get('include');
+        $query = Product::query();
+        if (request('include') == 'properties') {
+            $query->with('properties');
+        }
+        $products = $query->where('category_id', '=', $categoryId)
+            ->filter(request(['sort', 'order_by', 'price_start', 'price_end']))
+            ->paginate(10);
 
-        if ($eagerLoad == 'properties') {
-            $products = Product::with($eagerLoad)->where('category_id', '=', $categoryId)->paginate(10);
-            if ($products->isEmpty()) {
-                return $this->errorNotFound('No products found');
-            }
-            return $this->respondWithPagination($products, new ProductTransformer());
+        if ($products->isEmpty()) {
+            return $this->errorNotFound('No products found');
         }
 
-        if (!$eagerLoad) {
-            $products = Product::where('category_id', '=', $categoryId)->paginate(10);
-            if ($products->isEmpty()) {
-                return $this->errorNotFound('No products found');
-            }
-            return $this->respondWithPagination($products, new ProductTransformer());
-        }
-
-        if ($eagerLoad != 'properties') {
-            return $this->errorWrongArgs('Wrong arguments used');
-        }
+        return $this->respondWithPagination($products, new ProductTransformer());
     }
 
     public function create(Request $request)
     {
-        $validator = Validator::make($request->all(),[
+        $validator = Validator::make($request->all(), [
             'category_id' => 'integer|exists:categories,id|required',
             'name' => 'string|max:255|required|unique:products',
             'price' => 'numeric|required',
@@ -48,8 +38,8 @@ class ProductController extends ApiController
             'description' => 'string|required'
         ]);
 
-        if ($validator->fails()){
-           return $this->errorNotAcceptable();
+        if ($validator->fails()) {
+            return $this->errorNotAcceptable();
         }
 
         $product = new Product($request->all());

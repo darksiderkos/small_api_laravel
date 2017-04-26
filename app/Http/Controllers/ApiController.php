@@ -104,6 +104,4 @@ class ApiController extends Controller
         return $this->setStatusCode(406)->respondWithError($message);
 
     }
-
-
 }

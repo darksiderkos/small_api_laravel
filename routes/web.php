@@ -1,19 +1,5 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
-//Route::get('/', 'ProductController@index');
-
-
 Route::group(['prefix' => '/api'], function () {
 
     //Categories
@@ -21,13 +7,9 @@ Route::group(['prefix' => '/api'], function () {
         Route::get('/', 'CategoryController@index'); //- получить список категорий
         Route::get('/{id}', 'CategoryController@show')->where('id', '[0-9]+'); //- получить список категорий
         Route::get('/{categoryId}/products', 'ProductController@index')->where('categoryId', '[0-9]+');//- получить категорию со списком товаров (пагинация)
-
-
-            Route::post('/', 'CategoryController@create');
-            Route::put('/{categoryId}', 'CategoryController@update')->where('categoryId', '[0-9]+');
-            Route::delete('/{categoryId}', 'CategoryController@delete');
-
-
+        Route::post('/', 'CategoryController@create');
+        Route::put('/{categoryId}', 'CategoryController@update')->where('categoryId', '[0-9]+');
+        Route::delete('/{categoryId}', 'CategoryController@delete');
     });
 
     //Products
@@ -35,12 +17,5 @@ Route::group(['prefix' => '/api'], function () {
         Route::get('/{productId}', 'ProductController@show')->where('id', '[0-9]+');
         Route::put('/{productId}', 'ProductController@update')->where('id', '[0-9]+');
         Route::post('/', 'ProductController@create')->where('id', '[0-9]+');
-
     });
-
-
-//    Route::post('/categories/{categoryId}/products', 'ProductController@create');
-//    Route::put('/categories/{categoryId}/products/{productId}', 'ProductController@update');
-
-
 });
