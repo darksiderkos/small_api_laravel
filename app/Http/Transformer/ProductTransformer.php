@@ -7,7 +7,6 @@ use League\Fractal\TransformerAbstract;
 
 class ProductTransformer extends TransformerAbstract
 {
-
     protected $availableIncludes = [
         'properties'
     ];
@@ -16,19 +15,18 @@ class ProductTransformer extends TransformerAbstract
     {
         return[
             'id'=> (int) $product->id,
-            'categoryId' => (int) $product->category_id,
+            'category_id' => (int) $product->category_id,
             'name' => $product->name,
             'price' => (float) $product->price,
             'description' => $product->description,
-            'isActive' => (boolean)$product->is_active,
+            'is_active' => (boolean)$product->is_active,
         ];
     }
 
     public function includeProperties(Product $product)
     {
         $properties = $product->properties;
+
         return $this->collection($properties, new PropertyTransformer);
     }
 }
-
-

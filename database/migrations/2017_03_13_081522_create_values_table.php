@@ -17,7 +17,7 @@ class CreateValuesTable extends Migration
             $table->engine ='InnoDB';
             $table->increments('id');
             $table->double('value');
-//            $table->timestamps();
+            $table->timestamps();
         });
     }
 

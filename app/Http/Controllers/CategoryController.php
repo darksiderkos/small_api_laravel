@@ -3,63 +3,75 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use Validator;
+use App\Http\Transformer\CategoryTransformer;
 use Illuminate\Http\Request;
 
 class CategoryController extends ApiController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
-        $categories = Category::all();
-        return $categories;
+        $paginator = Category::paginate(10);
+
+        return $this->respondWithPagination($paginator, new CategoryTransformer());
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function create(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|unique:categories|max:255',
+            'description' => 'required|max:255'
+        ]);
+
+        if ($validator->fails()) {
+            return $this->errorNotAcceptable();
+        }
+
+        $category = new Category;
+        $category->name = $request->input('name');
+        $category->description = $request->input('description');
+        $category->save();
+
+        return $this->respondWithItem($category, new CategoryTransformer());
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function show($id)
     {
-        //
+        $category = Category::find($id);
+        if (!$category) {
+            return $this->errorNotFound('Category not found');
+        }
+
+        return $this->respondWithItem($category, new CategoryTransformer());
     }
 
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
-        //
+        $category = Category::find($id);
+        if (!$category) {
+            return $this->errorNotFound('Category not found');
+        }
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'unique:categories|max:255',
+            'description' => 'max:255'
+        ]);
+
+        if ($validator->fails()) {
+            return $this->errorNotAcceptable();
+        }
+
+        $category->name = $request->input('name') ?: $category->name;
+        $category->description = $request->input('description') ?: $category->description;
+        $category->save();
+
+        return $this->respondWithItem($category, new CategoryTransformer());
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function delete($id)
     {
         //

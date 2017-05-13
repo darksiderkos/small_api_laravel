@@ -25,6 +25,7 @@ class PropertyTransformer extends TransformerAbstract
     public function includeValue(Property $property)
     {
         $value = $property->value;
+
         return $this->item($value, new ValueTransformer);
     }
 }

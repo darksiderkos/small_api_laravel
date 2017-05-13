@@ -4,7 +4,10 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\Debug\Exception\FatalErrorException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -44,6 +47,17 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        if ($exception instanceof HttpException){
+            $response = json_encode([
+                'error' => [
+                    'http_code' => 400,
+                    'message' => 'Bad request. Such route does not exist'
+                ]]);
+            return response($response,
+                400,
+                ['Content-type' => 'application/json']);
+        }
+
         return parent::render($request, $exception);
     }
 
