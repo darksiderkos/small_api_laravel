@@ -6,9 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Property extends Model
 {
-    //
     protected $hidden = array('pivot');
-//    protected $appends = ['value'];
 
     public function products()
     {

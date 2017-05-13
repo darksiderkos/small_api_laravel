@@ -44,5 +44,4 @@ class Product extends Model
             $query->where('price', '<=', $priceEnd);
         }
     }
-
 }

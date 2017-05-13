@@ -9,8 +9,6 @@ use Validator;
 
 class ProductController extends ApiController
 {
-    //
-
     public function index($categoryId)
     {
         $query = Product::query();
@@ -44,6 +42,7 @@ class ProductController extends ApiController
 
         $product = new Product($request->all());
         $product->save();
+
         return $this->respondWithItem($product, new ProductTransformer());
     }
 
@@ -95,6 +94,7 @@ class ProductController extends ApiController
         $product->is_active = $request->has('is_active') ? (boolean)$request->input('is_active') : $product->is_active;
         $product->description = $request->input('description') ?: $product->description;
         $product->save();
+
         return $this->respondWithItem($product, new ProductTransformer());
     }
 }

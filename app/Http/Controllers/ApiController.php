@@ -12,9 +12,7 @@ use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 class ApiController extends Controller
 {
     protected $statusCode = 200;
-
     protected $fractal;
-
 
     public function __construct(Manager $fractal)
     {
@@ -22,9 +20,7 @@ class ApiController extends Controller
         if (\Request::get('include')) {
             $this->fractal->parseIncludes(\Request::get('include'));
         }
-
     }
-
 
     public function getStatusCode()
     {
@@ -34,6 +30,7 @@ class ApiController extends Controller
     public function setStatusCode($statusCode)
     {
         $this->statusCode = $statusCode;
+
         return $this;
     }
 
@@ -42,6 +39,7 @@ class ApiController extends Controller
     {
         $resource = new Item($item, $callback);
         $rootScope = $this->fractal->createData($resource);
+
         return $this->respondWithArray($rootScope->toArray());
     }
 
@@ -49,6 +47,7 @@ class ApiController extends Controller
     {
         $resource = new Collection($collection, $callback);
         $rootScope = $this->fractal->createData($resource);
+
         return $this->respondWithArray($rootScope->toArray());
     }
 
@@ -59,12 +58,13 @@ class ApiController extends Controller
 
     public function respondWithPagination($paginator, $callback)
     {
-        $queryParams = array_diff_key($_GET, array_flip(['page']));
+        $queryParams = request()->all();
         $paginator->appends($queryParams);
         $resource = $paginator->getCollection();
         $resource = new Collection($resource, $callback);
         $resource->setPaginator(new IlluminatePaginatorAdapter($paginator));
         $rootScope = $this->fractal->createData($resource);
+
         return $this->respondWithArray($rootScope->toArray());
     }
 
@@ -102,6 +102,5 @@ class ApiController extends Controller
     public function errorNotAcceptable($message = 'Input is not acceptable')
     {
         return $this->setStatusCode(406)->respondWithError($message);
-
     }
 }

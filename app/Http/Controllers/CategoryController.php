@@ -9,10 +9,10 @@ use Illuminate\Http\Request;
 
 class CategoryController extends ApiController
 {
-
     public function index()
     {
         $paginator = Category::paginate(10);
+
         return $this->respondWithPagination($paginator, new CategoryTransformer());
     }
 
@@ -32,6 +32,7 @@ class CategoryController extends ApiController
         $category->name = $request->input('name');
         $category->description = $request->input('description');
         $category->save();
+
         return $this->respondWithItem($category, new CategoryTransformer());
     }
 
@@ -42,6 +43,7 @@ class CategoryController extends ApiController
         if (!$category) {
             return $this->errorNotFound('Category not found');
         }
+
         return $this->respondWithItem($category, new CategoryTransformer());
     }
 
@@ -65,6 +67,7 @@ class CategoryController extends ApiController
         $category->name = $request->input('name') ?: $category->name;
         $category->description = $request->input('description') ?: $category->description;
         $category->save();
+
         return $this->respondWithItem($category, new CategoryTransformer());
     }
 
