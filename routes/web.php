@@ -1,6 +1,7 @@
 <?php
 
-Route::group(['prefix' => '/api'], function () {
+Route::group(['prefix' => '/api', 'middleware' => 'jwt.auth'], function () {
+    Route::post('/login', 'AuthController@login');
 
     //Categories
     Route::group(['prefix' => 'categories'], function () {
@@ -17,5 +18,8 @@ Route::group(['prefix' => '/api'], function () {
         Route::get('/{productId}', 'ProductController@show')->where('id', '[0-9]+');
         Route::put('/{productId}', 'ProductController@update')->where('id', '[0-9]+');
         Route::post('/', 'ProductController@create')->where('id', '[0-9]+');
+    });
+
+    Route::middleware('jwt.refresh')->get('/token', function () {
     });
 });

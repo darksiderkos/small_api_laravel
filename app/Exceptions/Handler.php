@@ -58,6 +58,12 @@ class Handler extends ExceptionHandler
                 ['Content-type' => 'application/json']);
         }
 
+        if ($exception instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException) {
+            return response()->json(['token_expired'], $exception->getStatusCode());
+        } else if ($exception instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException) {
+            return response()->json(['token_invalid'], $exception->getStatusCode());
+        }
+
         return parent::render($request, $exception);
     }
 

@@ -1,7 +1,7 @@
 <?php
 /**
  * A helper file for Laravel 5, to provide autocomplete information to your IDE
- * Generated for Laravel 5.4.15 on 2017-03-13.
+ * Generated for Laravel 5.4.23 on 2017-05-25.
  *
  * @author Barry vd. Heuvel <barryvdh@gmail.com>
  * @see https://github.com/barryvdh/laravel-ide-helper
@@ -101,56 +101,61 @@ namespace Illuminate\Support\Facades {
         /**
          * Get the path to the application "app" directory.
          *
+         * @param string $path Optionally, a path to append to the app path
          * @return string 
          * @static 
          */
-        public static function path()
+        public static function path($path = '')
         {
-            return \Illuminate\Foundation\Application::path();
+            return \Illuminate\Foundation\Application::path($path);
         }
         
         /**
          * Get the base path of the Laravel installation.
          *
+         * @param string $path Optionally, a path to append to the base path
          * @return string 
          * @static 
          */
-        public static function basePath()
+        public static function basePath($path = '')
         {
-            return \Illuminate\Foundation\Application::basePath();
+            return \Illuminate\Foundation\Application::basePath($path);
         }
         
         /**
          * Get the path to the bootstrap directory.
          *
+         * @param string $path Optionally, a path to append to the bootstrap path
          * @return string 
          * @static 
          */
-        public static function bootstrapPath()
+        public static function bootstrapPath($path = '')
         {
-            return \Illuminate\Foundation\Application::bootstrapPath();
+            return \Illuminate\Foundation\Application::bootstrapPath($path);
         }
         
         /**
          * Get the path to the application configuration files.
          *
+         * @param string $path Optionally, a path to append to the config path
          * @return string 
          * @static 
          */
-        public static function configPath()
+        public static function configPath($path = '')
         {
-            return \Illuminate\Foundation\Application::configPath();
+            return \Illuminate\Foundation\Application::configPath($path);
         }
         
         /**
          * Get the path to the database directory.
          *
+         * @param string $path Optionally, a path to append to the database path
          * @return string 
          * @static 
          */
-        public static function databasePath()
+        public static function databasePath($path = '')
         {
-            return \Illuminate\Foundation\Application::databasePath();
+            return \Illuminate\Foundation\Application::databasePath($path);
         }
         
         /**
@@ -213,12 +218,13 @@ namespace Illuminate\Support\Facades {
         /**
          * Get the path to the resources directory.
          *
+         * @param string $path
          * @return string 
          * @static 
          */
-        public static function resourcePath()
+        public static function resourcePath($path = '')
         {
-            return \Illuminate\Foundation\Application::resourcePath();
+            return \Illuminate\Foundation\Application::resourcePath($path);
         }
         
         /**
@@ -1085,6 +1091,20 @@ namespace Illuminate\Support\Facades {
         }
         
         /**
+         * Resolve the given type with the given parameter overrides.
+         *
+         * @param string $abstract
+         * @param array $parameters
+         * @return mixed 
+         * @static 
+         */
+        public static function makeWith($abstract, $parameters)
+        {
+            //Method inherited from \Illuminate\Container\Container            
+            return \Illuminate\Foundation\Application::makeWith($abstract, $parameters);
+        }
+        
+        /**
          * Instantiate a concrete instance of the given type.
          *
          * @param string $concrete
@@ -1334,13 +1354,13 @@ namespace Illuminate\Support\Facades {
          *
          * @param string $command
          * @param array $parameters
-         * @return void 
+         * @return \Illuminate\Foundation\Bus\PendingDispatch 
          * @static 
          */
         public static function queue($command, $parameters = array())
         {
             //Method inherited from \Illuminate\Foundation\Console\Kernel            
-            \App\Console\Kernel::queue($command, $parameters);
+            return \App\Console\Kernel::queue($command, $parameters);
         }
         
         /**
@@ -1893,6 +1913,31 @@ namespace Illuminate\Support\Facades {
         public static function guest()
         {
             return \Illuminate\Auth\SessionGuard::guest();
+        }
+        
+        /**
+         * Register a custom macro.
+         *
+         * @param string $name
+         * @param callable $macro
+         * @return void 
+         * @static 
+         */
+        public static function macro($name, $macro)
+        {
+            \Illuminate\Auth\SessionGuard::macro($name, $macro);
+        }
+        
+        /**
+         * Checks if macro is registered.
+         *
+         * @param string $name
+         * @return bool 
+         * @static 
+         */
+        public static function hasMacro($name)
+        {
+            return \Illuminate\Auth\SessionGuard::hasMacro($name);
         }
         
     }         
@@ -3586,11 +3631,11 @@ namespace Illuminate\Support\Facades {
         /**
          * Get an option from the configuration options.
          *
-         * @param string $option
+         * @param string|null $option
          * @return mixed 
          * @static 
          */
-        public static function getConfig($option)
+        public static function getConfig($option = null)
         {
             //Method inherited from \Illuminate\Database\Connection            
             return \Illuminate\Database\MySqlConnection::getConfig($option);
@@ -4059,7 +4104,7 @@ namespace Illuminate\Support\Facades {
          *
          * @param string|\Closure $listener
          * @param bool $wildcard
-         * @return mixed 
+         * @return \Closure 
          * @static 
          */
         public static function makeListener($listener, $wildcard = false)
@@ -4729,6 +4774,17 @@ namespace Illuminate\Support\Facades {
         public static function forUser($user)
         {
             return \Illuminate\Auth\Access\Gate::forUser($user);
+        }
+        
+        /**
+         * Get all of the defined abilities.
+         *
+         * @return array 
+         * @static 
+         */
+        public static function abilities()
+        {
+            return \Illuminate\Auth\Access\Gate::abilities();
         }
         
     }         
@@ -5554,6 +5610,31 @@ namespace Illuminate\Support\Facades {
         public static function setQueue($queue)
         {
             return \Illuminate\Mail\Mailer::setQueue($queue);
+        }
+        
+        /**
+         * Register a custom macro.
+         *
+         * @param string $name
+         * @param callable $macro
+         * @return void 
+         * @static 
+         */
+        public static function macro($name, $macro)
+        {
+            \Illuminate\Mail\Mailer::macro($name, $macro);
+        }
+        
+        /**
+         * Checks if macro is registered.
+         *
+         * @param string $name
+         * @return bool 
+         * @static 
+         */
+        public static function hasMacro($name)
+        {
+            return \Illuminate\Mail\Mailer::hasMacro($name);
         }
         
     }         
@@ -6979,7 +7060,7 @@ namespace Illuminate\Support\Facades {
          * ("Client-Ip" for instance), configure it via "setTrustedHeaderName()" with
          * the "client-ip" key.
          *
-         * @return string The client IP address
+         * @return string|null The client IP address
          * @see getClientIps()
          * @see http://en.wikipedia.org/wiki/X-Forwarded-For
          * @static 
@@ -7082,7 +7163,7 @@ namespace Illuminate\Support\Facades {
          * If your reverse proxy uses a different header name than "X-Forwarded-Port",
          * configure it via "setTrustedHeaderName()" with the "client-port" key.
          *
-         * @return string 
+         * @return int|string can be a string if fetched from the server bag
          * @static 
          */
         public static function getPort()
@@ -9274,7 +9355,7 @@ namespace Illuminate\Support\Facades {
         }
         
         /**
-         * Checks if an a key is present and not null.
+         * Checks if a key is present and not null.
          *
          * @param string|array $key
          * @return bool 
@@ -9906,7 +9987,7 @@ namespace Illuminate\Support\Facades {
          * Store the uploaded file on the disk.
          *
          * @param string $path
-         * @param \Illuminate\Http\UploadedFile $file
+         * @param \Illuminate\Http\File|\Illuminate\Http\UploadedFile $file
          * @param array $options
          * @return string|false 
          * @static 
@@ -10570,6 +10651,20 @@ namespace Illuminate\Support\Facades {
         }
         
         /**
+         * Register a custom implicit validator extension.
+         *
+         * @param string $rule
+         * @param \Closure|string $extension
+         * @param string $message
+         * @return void 
+         * @static 
+         */
+        public static function extendDependent($rule, $extension, $message = null)
+        {
+            \Illuminate\Validation\Factory::extendDependent($rule, $extension, $message);
+        }
+        
+        /**
          * Register a custom implicit validator message replacer.
          *
          * @param string $rule
@@ -10658,6 +10753,21 @@ namespace Illuminate\Support\Facades {
         public static function make($view, $data = array(), $mergeData = array())
         {
             return \Illuminate\View\Factory::make($view, $data, $mergeData);
+        }
+        
+        /**
+         * Get the rendered content of the view based on a given condition.
+         *
+         * @param bool $condition
+         * @param string $view
+         * @param array $data
+         * @param array $mergeData
+         * @return string 
+         * @static 
+         */
+        public static function renderWhen($condition, $view, $data = array(), $mergeData = array())
+        {
+            return \Illuminate\View\Factory::renderWhen($condition, $view, $data, $mergeData);
         }
         
         /**
@@ -11227,7 +11337,7 @@ namespace Illuminate\Support\Facades {
         /**
          * Get an instance of the last loop in the stack.
          *
-         * @return \StdClass|null 
+         * @return \stdClass|null 
          * @static 
          */
         public static function getLastLoop()
@@ -11346,6 +11456,140 @@ namespace Illuminate\Support\Facades {
     }         
 }
     
+namespace Tymon\JWTAuth\Facades {
+
+    class JWTFactory {
+        
+        /**
+         * Create the Payload instance.
+         *
+         * @param array $customClaims
+         * @return \Tymon\JWTAuth\Payload 
+         * @static 
+         */
+        public static function make($customClaims = array())
+        {
+            return \Tymon\JWTAuth\PayloadFactory::make($customClaims);
+        }
+        
+        /**
+         * Add an array of claims to the Payload.
+         *
+         * @param array $claims
+         * @return $this 
+         * @static 
+         */
+        public static function addClaims($claims)
+        {
+            return \Tymon\JWTAuth\PayloadFactory::addClaims($claims);
+        }
+        
+        /**
+         * Add a claim to the Payload.
+         *
+         * @param string $name
+         * @param mixed $value
+         * @return $this 
+         * @static 
+         */
+        public static function addClaim($name, $value)
+        {
+            return \Tymon\JWTAuth\PayloadFactory::addClaim($name, $value);
+        }
+        
+        /**
+         * Build out the Claim DTO's.
+         *
+         * @return array 
+         * @static 
+         */
+        public static function resolveClaims()
+        {
+            return \Tymon\JWTAuth\PayloadFactory::resolveClaims();
+        }
+        
+        /**
+         * Set the Issuer (iss) claim.
+         *
+         * @return string 
+         * @static 
+         */
+        public static function iss()
+        {
+            return \Tymon\JWTAuth\PayloadFactory::iss();
+        }
+        
+        /**
+         * Set the Issued At (iat) claim.
+         *
+         * @return int 
+         * @static 
+         */
+        public static function iat()
+        {
+            return \Tymon\JWTAuth\PayloadFactory::iat();
+        }
+        
+        /**
+         * Set the Expiration (exp) claim.
+         *
+         * @return int 
+         * @static 
+         */
+        public static function exp()
+        {
+            return \Tymon\JWTAuth\PayloadFactory::exp();
+        }
+        
+        /**
+         * Set the Not Before (nbf) claim.
+         *
+         * @return int 
+         * @static 
+         */
+        public static function nbf()
+        {
+            return \Tymon\JWTAuth\PayloadFactory::nbf();
+        }
+        
+        /**
+         * Set the token ttl (in minutes).
+         *
+         * @param int $ttl
+         * @return $this 
+         * @static 
+         */
+        public static function setTTL($ttl)
+        {
+            return \Tymon\JWTAuth\PayloadFactory::setTTL($ttl);
+        }
+        
+        /**
+         * Get the token ttl.
+         *
+         * @return int 
+         * @static 
+         */
+        public static function getTTL()
+        {
+            return \Tymon\JWTAuth\PayloadFactory::getTTL();
+        }
+        
+        /**
+         * Set the refresh flow.
+         *
+         * @param bool $refreshFlow
+         * @return $this 
+         * @static 
+         */
+        public static function setRefreshFlow($refreshFlow = true)
+        {
+            return \Tymon\JWTAuth\PayloadFactory::setRefreshFlow($refreshFlow);
+        }
+        
+    }         
+}
+    
     
 namespace {
 
@@ -11413,6 +11657,18 @@ namespace {
     
     class Eloquent extends \Illuminate\Database\Eloquent\Model {    
         /**
+         * Create and return and un-saved model instance.
+         *
+         * @param array $attributes
+         * @return \Illuminate\Database\Eloquent\Model 
+         * @static 
+         */
+        public static function make($attributes = array())
+        {
+            return \Illuminate\Database\Eloquent\Builder::make($attributes);
+        }
+        
+        /**
          * Register a new global scope.
          *
          * @param string $identifier
@@ -11461,20 +11717,6 @@ namespace {
         }
         
         /**
-         * Apply the callback's query changes if the given "value" is true.
-         *
-         * @param bool $value
-         * @param \Closure $callback
-         * @param \Closure $default
-         * @return $this 
-         * @static 
-         */
-        public static function when($value, $callback, $default = null)
-        {
-            return \Illuminate\Database\Eloquent\Builder::when($value, $callback, $default);
-        }
-        
-        /**
          * Add a where clause on the primary key to the query.
          *
          * @param mixed $id
@@ -11489,7 +11731,7 @@ namespace {
         /**
          * Add a basic where clause to the query.
          *
-         * @param string|\Closure $column
+         * @param string|array|\Closure $column
          * @param string $operator
          * @param mixed $value
          * @param string $boolean
@@ -11545,7 +11787,7 @@ namespace {
          *
          * @param mixed $id
          * @param array $columns
-         * @return mixed 
+         * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Collection|static[]|static|null 
          * @static 
          */
         public static function find($id, $columns = array())
@@ -11630,18 +11872,6 @@ namespace {
         public static function updateOrCreate($attributes, $values = array())
         {
             return \Illuminate\Database\Eloquent\Builder::updateOrCreate($attributes, $values);
-        }
-        
-        /**
-         * Execute the query and get the first result.
-         *
-         * @param array $columns
-         * @return \Illuminate\Database\Eloquent\Model|static|null 
-         * @static 
-         */
-        public static function first($columns = array())
-        {
-            return \Illuminate\Database\Eloquent\Builder::first($columns);
         }
         
         /**
@@ -11730,19 +11960,6 @@ namespace {
         }
         
         /**
-         * Chunk the results of the query.
-         *
-         * @param int $count
-         * @param callable $callback
-         * @return bool 
-         * @static 
-         */
-        public static function chunk($count, $callback)
-        {
-            return \Illuminate\Database\Eloquent\Builder::chunk($count, $callback);
-        }
-        
-        /**
          * Chunk the results of a query by comparing numeric IDs.
          *
          * @param int $count
@@ -11755,19 +11972,6 @@ namespace {
         public static function chunkById($count, $callback, $column = null, $alias = null)
         {
             return \Illuminate\Database\Eloquent\Builder::chunkById($count, $callback, $column, $alias);
-        }
-        
-        /**
-         * Execute a callback over each item while chunking.
-         *
-         * @param callable $callback
-         * @param int $count
-         * @return bool 
-         * @static 
-         */
-        public static function each($callback, $count = 1000)
-        {
-            return \Illuminate\Database\Eloquent\Builder::each($callback, $count);
         }
         
         /**
@@ -11886,6 +12090,18 @@ namespace {
         }
         
         /**
+         * Create a new instance of the model being queried.
+         *
+         * @param array $attributes
+         * @return \Illuminate\Database\Eloquent\Model 
+         * @static 
+         */
+        public static function newModelInstance($attributes = array())
+        {
+            return \Illuminate\Database\Eloquent\Builder::newModelInstance($attributes);
+        }
+        
+        /**
          * Get the underlying query builder instance.
          *
          * @return \Illuminate\Database\Query\Builder 
@@ -11978,6 +12194,58 @@ namespace {
         }
         
         /**
+         * Chunk the results of the query.
+         *
+         * @param int $count
+         * @param callable $callback
+         * @return bool 
+         * @static 
+         */
+        public static function chunk($count, $callback)
+        {
+            return \Illuminate\Database\Eloquent\Builder::chunk($count, $callback);
+        }
+        
+        /**
+         * Execute a callback over each item while chunking.
+         *
+         * @param callable $callback
+         * @param int $count
+         * @return bool 
+         * @static 
+         */
+        public static function each($callback, $count = 1000)
+        {
+            return \Illuminate\Database\Eloquent\Builder::each($callback, $count);
+        }
+        
+        /**
+         * Execute the query and get the first result.
+         *
+         * @param array $columns
+         * @return mixed 
+         * @static 
+         */
+        public static function first($columns = array())
+        {
+            return \Illuminate\Database\Eloquent\Builder::first($columns);
+        }
+        
+        /**
+         * Apply the callback's query changes if the given "value" is true.
+         *
+         * @param mixed $value
+         * @param \Closure $callback
+         * @param \Closure $default
+         * @return mixed 
+         * @static 
+         */
+        public static function when($value, $callback, $default = null)
+        {
+            return \Illuminate\Database\Eloquent\Builder::when($value, $callback, $default);
+        }
+        
+        /**
          * Add a relationship count / exists condition to the query.
          *
          * @param string $relation
@@ -12046,7 +12314,7 @@ namespace {
          * @return \Illuminate\Database\Eloquent\Builder|static 
          * @static 
          */
-        public static function orWhereHas($relation, $callback, $operator = '>=', $count = 1)
+        public static function orWhereHas($relation, $callback = null, $operator = '>=', $count = 1)
         {
             return \Illuminate\Database\Eloquent\Builder::orWhereHas($relation, $callback, $operator, $count);
         }
@@ -12268,6 +12536,18 @@ namespace {
         public static function crossJoin($table, $first = null, $operator = null, $second = null)
         {
             return \Illuminate\Database\Query\Builder::crossJoin($table, $first, $operator, $second);
+        }
+        
+        /**
+         * Pass the query to a given callback.
+         *
+         * @param \Closure $callback
+         * @return \Illuminate\Database\Query\Builder 
+         * @static 
+         */
+        public static function tap($callback)
+        {
+            return \Illuminate\Database\Query\Builder::tap($callback);
         }
         
         /**
@@ -12798,6 +13078,18 @@ namespace {
         public static function orderBy($column, $direction = 'asc')
         {
             return \Illuminate\Database\Query\Builder::orderBy($column, $direction);
+        }
+        
+        /**
+         * Add a descending "order by" clause to the query.
+         *
+         * @param string $column
+         * @return $this 
+         * @static 
+         */
+        public static function orderByDesc($column)
+        {
+            return \Illuminate\Database\Query\Builder::orderByDesc($column);
         }
         
         /**
@@ -13347,6 +13639,8 @@ namespace {
             return \Illuminate\Database\Query\Builder::macroCall($method, $parameters);
         }
         }
+    
+    class JWTFactory extends \Tymon\JWTAuth\Facades\JWTFactory {}
     
 }
 
